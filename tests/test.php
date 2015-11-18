@@ -1,25 +1,51 @@
 <?php
 
+define('TESTIN_PATH', __DIR__ . '/../src/testin.php');
+define('FIXTURES_PATH', __DIR__ . '/fixtures');
+
+function runTestIn($testFile) {
+    exec(PHP_BINARY . ' ' . TESTIN_PATH . ' ' . $testFile, $output);
+
+    return $output;
+}
+
+/**
+ * @param $got
+ * @param $expected
+ */
+function assertEquals($got, $expected)
+{
+    assert($got === $expected, "\nExpecting: \n$expected\nGot:\n" . $got . "\n");
+}
+
 $displays_greetings = function () {
 
-    $pathToFramework = __DIR__ . '/../src/testin.php';
-
-    exec(PHP_BINARY . ' ' . $pathToFramework, $output);
+    $output = runTestIn('');
 
     $expected = 'Welcome to TestIn';
 
-    assert($output[0] === $expected, "\nExpecting: \n$expected\nGot:\n" . $output[0] . "\n");
+    assertEquals($output[0], $expected);
 };
 
 $displays_no_test_found = function() {
-    $pathToFramework = __DIR__ . '/../src/testin.php';
 
-    exec(PHP_BINARY . ' ' . $pathToFramework, $output);
+    $output = runTestIn('');
 
     $expected = 'No tests found :(';
 
-    assert($output[1] === $expected, "\nExpecting: \n$expected\nGot:\n" . $output[1] . "\n");
+    assertEquals($output[1], $expected);
+};
+
+$displays_number_of_total_tests_found = function($path, $total) {
+
+    $output = runTestIn($path);
+
+    $expected = 'Total tests: ' . $total;
+
+    assertEquals(end($output), $expected);
 };
 
 $displays_greetings();
 $displays_no_test_found();
+$displays_number_of_total_tests_found(FIXTURES_PATH . '/two-tests.php', 2);
+$displays_number_of_total_tests_found(FIXTURES_PATH . '/one-test.php', 1);
