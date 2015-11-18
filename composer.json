@@ -1,0 +1,10 @@
+{
+    "name": "rollen/testin",
+    "authors": [
+        {
+            "name": "Rafał Wartalski",
+            "email": "rafal.wartalski@gmail.com"
+        }
+    ],
+    "require": {}
+}
