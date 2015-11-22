@@ -31,10 +31,20 @@ if (isset($_SERVER['argv'][1])) {
 
     $suite = loadSuiteFromFile($_SERVER['argv'][1]);
 
-    foreach ($suite as $name => $test) {
-        echo $name . ': ';
+    $results = [];
 
+    foreach ($suite as $name => $test) {
         if ($runner($test)) {
+            $results[$name] = true;
+        } else {
+            $results[$name] = false;
+        }
+    }
+
+    foreach ($results as $testName => $result) {
+        echo $testName . ': ';
+
+        if ($result) {
             echo "OK\n";
         } else {
             echo "FAIL\n";
