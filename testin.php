@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use TestIn\Tests\TestRunner\ShouldReturnFalseWhenTestDoesRiseError;
-use TestIn\Tests\TestRunner\ShouldReturnTrueWhenTestDoesNotRiseAnyError;
+use TestIn\Tests\Runner\ShouldReturnFalseWhenTestDoesRiseError;
+use TestIn\Tests\Runner\ShouldReturnTrueWhenTestDoesNotRiseAnyError;
 
 $tests = include __DIR__ . '/tests/testin.php';
 

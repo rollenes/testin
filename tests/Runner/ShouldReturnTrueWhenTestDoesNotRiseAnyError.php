@@ -1,6 +1,6 @@
 <?php
 
-namespace TestIn\Tests\TestRunner;
+namespace TestIn\Tests\Runner;
 
 use TestIn\Runner;
 use TestIn\Tests\Assert;
