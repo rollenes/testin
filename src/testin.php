@@ -1,12 +1,13 @@
 <?php
 
+use TestIn\Result;
 use TestIn\Runner;
 use TestIn\Suite;
 
-echo 'Welcome to TestIn';
-echo "\n";
-
-$exitCode = 0;
+function printGreetings()
+{
+    echo "Welcome to TestIn by @rollenes\n";
+}
 
 /**
  * @param string $file
@@ -25,6 +26,32 @@ function loadSuiteFromFile(\string $file)
     return $suite;
 }
 
+/**
+ * @param Result $result
+ * @param int $testNumber
+ */
+function printTestResult(Result $result, \int $testNumber)
+{
+    echo ($result->isPassed() ? "ok" : "not ok") . ' ' . ($testNumber + 1) . ' ' . $result->getName() . "\n";
+}
+
+/**
+ * @param Suite $suite
+ */
+function printTotal(Suite $suite)
+{
+    echo '1..' . $suite->count() ."\n";
+}
+
+function printNoTestFound()
+{
+    echo "No tests found :(\n";
+}
+
+printGreetings();
+
+$exitCode = 0;
+
 if (isset($_SERVER['argv'][1])) {
 
     $runner = new Runner();
@@ -37,20 +64,18 @@ if (isset($_SERVER['argv'][1])) {
         $results[] = $runner($test, $name);
     }
 
-
     foreach ($results as $testNumber => $result) {
 
         if (!$result->isPassed()) {
             $exitCode = 1;
         }
 
-        echo ($result->isPassed() ? "ok" : "not ok") . ' ' . ($testNumber + 1). ' ' . $result->getName() . "\n";
+        printTestResult($result, $testNumber);
     }
 
-    echo '1..' . $suite->count();
+    printTotal($suite);
 } else {
-    echo 'No tests found :(';
+    printNoTestFound();
 }
 
-echo "\n";
 exit($exitCode);

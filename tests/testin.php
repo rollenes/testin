@@ -54,7 +54,7 @@ $displays_greetings = function () {
 
     $result = runTestIn('');
 
-    $expected = 'Welcome to TestIn';
+    $expected = 'Welcome to TestIn by @rollenes';
 
     Assert::same($result->getOutput()[0], $expected);
 };
