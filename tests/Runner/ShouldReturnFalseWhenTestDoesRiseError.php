@@ -9,12 +9,12 @@ class ShouldReturnFalseWhenTestDoesRiseError
 {
     public function __invoke()
     {
+        $testRunner = new Runner();
+
         $failingTest = function() {
             throw new \Error();
         };
 
-        $testRunner = new Runner($failingTest);
-
-        Assert::same($testRunner(), false);
+        Assert::same($testRunner($failingTest), false);
     }
 }

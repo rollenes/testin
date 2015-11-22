@@ -9,14 +9,14 @@ $exitCode = 0;
 
 if (isset($_SERVER['argv'][1])) {
 
+    $runner = new Runner();
+
     $tests = require_once $_SERVER['argv'][1];
 
     foreach ($tests as $name => $test) {
         echo $name . ': ';
 
-        $runner = new Runner($test);
-
-        if ($runner()) {
+        if ($runner($test)) {
             echo "OK\n";
         } else {
             echo "FAIL\n";

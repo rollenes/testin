@@ -5,19 +5,12 @@ namespace TestIn;
 class Runner
 {
     /**
-     * @var Callable
+     * @param callable $test
+     * @return bool
      */
-    private $test;
-
-    public function __construct(Callable $test)
-    {
-        $this->test = $test;
-    }
-
-    public function __invoke()
+    public function __invoke(Callable $test)
     {
         try {
-            $test = $this->test;
 
             $test();
 

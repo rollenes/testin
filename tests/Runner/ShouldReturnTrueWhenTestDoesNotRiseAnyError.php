@@ -9,10 +9,10 @@ class ShouldReturnTrueWhenTestDoesNotRiseAnyError
 {
     public function __invoke()
     {
+        $testRunner = new Runner();
+
         $passingTest = function(){};
 
-        $testRunner = new Runner($passingTest);
-
-        Assert::same($testRunner(), true);
+        Assert::same($testRunner($passingTest), true);
     }
 }
