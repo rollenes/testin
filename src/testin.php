@@ -1,5 +1,7 @@
 <?php
 
+use TestIn\Runner;
+
 echo 'Welcome to TestIn';
 echo "\n";
 
@@ -12,7 +14,9 @@ if (isset($_SERVER['argv'][1])) {
     foreach ($tests as $name => $test) {
         echo $name . ': ';
 
-        if ($test()) {
+        $runner = new Runner($test);
+
+        if ($runner()) {
             echo "OK\n";
         } else {
             echo "FAIL\n";

@@ -1,4 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
+    require $autoload;
+}
+
 include __DIR__ . '/../src/testin.php';

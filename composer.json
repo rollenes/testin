@@ -1,18 +1,23 @@
 {
-    "name": "rollen/testin",
-    "authors": [
-        {
-            "name": "Rafał Wartalski",
-            "email": "rafal.wartalski@gmail.com"
-        }
-    ],
-    "bin" : [
-        "bin/testin"
-    ],
-    "autoload": {
-        "ps4": {
-            "TestIn\\": "src/"
-        }
-    },
-    "require": {}
+  "name": "rollen/testin",
+  "authors": [
+    {
+      "name": "Rafał Wartalski",
+      "email": "rafal.wartalski@gmail.com"
+    }
+  ],
+  "bin": [
+    "bin/testin"
+  ],
+  "autoload": {
+    "psr-4": {
+      "TestIn\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TestIn\\Tests\\": "tests/"
+    }
+  },
+  "require": {}
 }

@@ -1,7 +1,9 @@
 <?php
 
-define('TESTIN_PATH', __DIR__ . '/../src/testin.php');
-define('FIXTURES_PATH', __DIR__ . '/fixtures');
+use TestIn\Tests\Assert;
+
+define('TESTIN_CMD', realpath(__DIR__ . '/../bin/testin'));
+define('FIXTURES_PATH', realpath(__DIR__ . '/fixtures'));
 
 class TestInResult
 {
@@ -38,19 +40,14 @@ class TestInResult
     }
 }
 
-function runTestIn($testFile) {
-    exec(PHP_BINARY . ' ' . TESTIN_PATH . ' ' . $testFile, $output, $returnedVal);
+/**
+ * @param string $testFile
+ * @return TestInResult
+ */
+function runTestIn(string $testFile) {
+    exec(PHP_BINARY . ' ' . TESTIN_CMD . ' ' . $testFile, $output, $returnedVal);
 
     return new TestInResult($output, $returnedVal);
-}
-
-/**
- * @param $got
- * @param $expected
- */
-function assertEquals($got, $expected)
-{
-    return assert($got === $expected, "\nExpecting: \n$expected\nGot:\n" . $got . "\n");
 }
 
 $displays_greetings = function () {
@@ -59,7 +56,7 @@ $displays_greetings = function () {
 
     $expected = 'Welcome to TestIn';
 
-    return assertEquals($result->getOutput()[0], $expected);
+    Assert::same($result->getOutput()[0], $expected);
 };
 
 $displays_no_test_found = function() {
@@ -68,7 +65,7 @@ $displays_no_test_found = function() {
 
     $expected = 'No tests found :(';
 
-    return assertEquals($result->getOutput()[1], $expected);
+    Assert::same($result->getOutput()[1], $expected);
 };
 
 $displays_number_of_total_tests_found = function($path, $total) {
@@ -79,7 +76,7 @@ $displays_number_of_total_tests_found = function($path, $total) {
 
     $output = $result->getOutput();
 
-    return assertEquals(end($output), $expected);
+    Assert::same(end($output), $expected);
 };
 
 $displays_that_test_passes = function() {
@@ -88,7 +85,7 @@ $displays_that_test_passes = function() {
 
     $expected = 'passes: OK';
 
-    return assertEquals($result->getOutput()[1], $expected);
+    Assert::same($result->getOutput()[1], $expected);
 };
 
 $displays_that_test_fails = function() {
@@ -97,31 +94,31 @@ $displays_that_test_fails = function() {
 
     $expected = 'fails: FAIL';
 
-    return assertEquals($result->getOutput()[1], $expected);
+    Assert::same($result->getOutput()[1], $expected);
 };
 
 $returns_0_when_all_tests_passes = function() {
 
     $result = runTestIn(FIXTURES_PATH . '/passes.php');
 
-    return assertEquals($result->getExitCode(), 0);
+    Assert::same($result->getExitCode(), 0);
 };
 
 $returns_1_when_one_of_tests_fails = function() {
 
     $result = runTestIn(FIXTURES_PATH . '/fails.php');
 
-    return assertEquals($result->getExitCode(), 1);
+    Assert::same($result->getExitCode(), 1);
 };
 
 return [
     'displays_greetings' => $displays_greetings,
     'displays_no_test_found' =>  $displays_no_test_found,
     'displays_number_of_total_tests_found_1' => function() use ($displays_number_of_total_tests_found) {
-        return $displays_number_of_total_tests_found(FIXTURES_PATH . '/two-tests.php', 2);
+        $displays_number_of_total_tests_found(FIXTURES_PATH . '/two-tests.php', 2);
     },
     'displays_number_of_total_tests_found_2' => function() use ($displays_number_of_total_tests_found) {
-        return $displays_number_of_total_tests_found(FIXTURES_PATH . '/one-test.php', 1);
+        $displays_number_of_total_tests_found(FIXTURES_PATH . '/one-test.php', 1);
     },
     'displays_that_test_passes' => $displays_that_test_passes,
     'displays_that_test_fails' => $displays_that_test_fails,
