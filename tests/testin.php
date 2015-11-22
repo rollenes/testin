@@ -72,7 +72,7 @@ $displays_number_of_total_tests_found = function($path, $total) {
 
     $result = runTestIn($path);
 
-    $expected = 'Total tests: ' . $total;
+    $expected = '1..' . $total;
 
     $output = $result->getOutput();
 

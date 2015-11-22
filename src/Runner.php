@@ -6,17 +6,18 @@ class Runner
 {
     /**
      * @param callable $test
+     * @param string $testName
      * @return bool
      */
-    public function __invoke(Callable $test)
+    public function __invoke(Callable $test, \string $testName)
     {
         try {
 
             $test();
 
-            return true;
+            return Result::passed($testName);
         } catch(\Throwable $e) {
-            return false;
+            return Result::failed($testName, $e);
         }
     }
 }

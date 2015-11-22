@@ -34,24 +34,20 @@ if (isset($_SERVER['argv'][1])) {
     $results = [];
 
     foreach ($suite as $name => $test) {
-        if ($runner($test)) {
-            $results[$name] = true;
-        } else {
-            $results[$name] = false;
-        }
+        $results[] = $runner($test, $name);
     }
 
-    $testNumber = 0;
-    foreach ($results as $testName => $result) {
 
-        if (!$result) {
+    foreach ($results as $testNumber => $result) {
+
+        if (!$result->isPassed()) {
             $exitCode = 1;
         }
 
-        echo ($result ? "ok" : "not ok") . ' ' . ++$testNumber . ' ' . $testName . "\n";
+        echo ($result->isPassed() ? "ok" : "not ok") . ' ' . ($testNumber + 1). ' ' . $result->getName() . "\n";
     }
 
-    echo 'Total tests: ' . $suite->count();
+    echo '1..' . $suite->count();
 } else {
     echo 'No tests found :(';
 }
