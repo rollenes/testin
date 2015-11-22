@@ -83,7 +83,7 @@ $displays_that_test_passes = function() {
 
     $result = runTestIn(FIXTURES_PATH . '/passes.php');
 
-    $expected = 'passes: OK';
+    $expected = 'ok 1 passes';
 
     Assert::same($result->getOutput()[1], $expected);
 };
@@ -92,9 +92,20 @@ $displays_that_test_fails = function() {
 
     $result = runTestIn(FIXTURES_PATH . '/fails.php');
 
-    $expected = 'fails: FAIL';
+    $expected = 'not ok 1 fails';
 
     Assert::same($result->getOutput()[1], $expected);
+};
+
+$displays_tests_in_tap_format = function() {
+
+    $result = runTestIn(FIXTURES_PATH . '/two-tests.php');
+
+    $expectedFirst = 'ok 1 test-first';
+    $expectedSecond = 'ok 2 test-second';
+
+    Assert::same($result->getOutput()[1], $expectedFirst);
+    Assert::same($result->getOutput()[2], $expectedSecond);
 };
 
 $returns_0_when_all_tests_passes = function() {
@@ -122,6 +133,7 @@ return [
     },
     'displays_that_test_passes' => $displays_that_test_passes,
     'displays_that_test_fails' => $displays_that_test_fails,
+    'displays_tests_in_tap_format' => $displays_tests_in_tap_format,
     'returns_0_when_all_tests_passes' => $returns_0_when_all_tests_passes,
     'returns_1_when_one_of_tests_fails' => $returns_1_when_one_of_tests_fails,
 ];

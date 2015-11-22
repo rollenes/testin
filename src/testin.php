@@ -41,15 +41,14 @@ if (isset($_SERVER['argv'][1])) {
         }
     }
 
+    $testNumber = 0;
     foreach ($results as $testName => $result) {
-        echo $testName . ': ';
 
-        if ($result) {
-            echo "OK\n";
-        } else {
-            echo "FAIL\n";
+        if (!$result) {
             $exitCode = 1;
         }
+
+        echo ($result ? "ok" : "not ok") . ' ' . ++$testNumber . ' ' . $testName . "\n";
     }
 
     echo 'Total tests: ' . $suite->count();
