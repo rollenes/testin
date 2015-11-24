@@ -11,7 +11,7 @@ class ShouldReturnFailedResultWhenTestDoesRisesError
     public function __invoke()
     {
         $testRunner = new Runner();
-        $error = new \Error();
+        $error = new \Exception();
 
         $failingTest = function() use ($error) {
             throw $error;
