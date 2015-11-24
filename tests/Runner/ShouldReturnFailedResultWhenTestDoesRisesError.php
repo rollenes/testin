@@ -10,7 +10,7 @@ class ShouldReturnFailedResultWhenTestDoesRisesError
 {
     public function __invoke()
     {
-        $testRunner = new Runner();
+        $testRunner = new Runner(function(){});
         $error = new \Error();
 
         $testName = 'failing-test-name';

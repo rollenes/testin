@@ -10,7 +10,7 @@ class ShouldReturnPassedResultWhenTestDoesNotRiseAnyError
 {
     public function __invoke()
     {
-        $testRunner = new Runner();
+        $testRunner = new Runner(function(){});
 
         $testName = 'test-name';
         $passingTest = function(){};

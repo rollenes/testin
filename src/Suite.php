@@ -28,4 +28,23 @@ class Suite implements \IteratorAggregate
     {
         return $this->tests->count();
     }
+
+    public function __invoke(Runner $runner)
+    {
+        $summary = new Summary();
+        $summary->total = $this->count();
+
+        foreach($this->tests as $testName => $test) {
+            $testResult = $runner($test, $testName);
+            $summary->executed++;
+
+            if ($testResult->isPassed()) {
+                $summary->passed[] = $testName;
+            } else {
+                $summary->failed[] = $testName;
+            }
+        }
+
+        return $summary;
+    }
 }
