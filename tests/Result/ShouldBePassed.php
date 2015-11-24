@@ -9,12 +9,9 @@ class ShouldBePassed
 {
     public function __invoke()
     {
-        $testName = 'passed-test-name';
-
-        $ok = Result::passed($testName);
+        $ok = Result::passed();
 
         Assert::same($ok->isPassed(), true);
-        Assert::same($ok->getName(), $testName);
         Assert::same($ok->getError(), null);
     }
 }

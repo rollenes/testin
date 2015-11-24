@@ -10,17 +10,15 @@ class ShouldReturnFailedResultWhenTestDoesRisesError
 {
     public function __invoke()
     {
-        $testRunner = new Runner(function(){});
+        $testRunner = new Runner();
         $error = new \Error();
-
-        $testName = 'failing-test-name';
 
         $failingTest = function() use ($error) {
             throw $error;
         };
 
-        $expected = Result::failed($testName, $error);
+        $expected = Result::failed($error);
 
-        Assert::like($testRunner($failingTest, $testName), $expected);
+        Assert::like($testRunner($failingTest), $expected);
     }
 }

@@ -26,17 +26,12 @@ function loadSuiteFromFile(\string $file)
     return $suite;
 }
 
-/**
- * @param Result $result
- * @param int $testNumber
- */
-function printTestResult(Result $result, \int $testNumber)
-{
-    echo ($result->isPassed() ? "ok" : "not ok") . ' ' . ($testNumber + 1) . ' ' . $result->getName() . "\n";
+$printResultCallback = function(\int $testNumber, \string $testName, Result $result) {
+    echo ($result->isPassed() ? "ok" : "not ok") . ' ' . $testNumber . ' ' . $testName . "\n";
     if (!$result->isPassed()) {
         echo $result->getError() . "\n";
     }
-}
+};
 
 /**
  * @param int $total
@@ -57,21 +52,13 @@ $exitCode = 0;
 
 if (isset($_SERVER['argv'][1])) {
 
-    $runner = new Runner(function(){});
+    $runner = new Runner();
 
     $suite = loadSuiteFromFile($_SERVER['argv'][1]);
 
-    $results = [];
+    $suite->setAfterTestCallback($printResultCallback);
 
     $summary = $suite($runner);
-
-    foreach ($suite as $name => $test) {
-        $results[] = $runner($test, $name);
-    }
-
-    foreach ($results as $testNumber => $result) {
-        printTestResult($result, $testNumber);
-    }
 
     if (!empty($summary->failed)) {
         $exitCode = 1;

@@ -9,9 +9,15 @@ class Suite implements \IteratorAggregate
      */
     private $tests;
 
+    /**
+     * @var callable
+     */
+    private $afterTestCallback;
+
     public function __construct()
     {
         $this->tests = new \ArrayIterator();
+        $this->afterTestCallback = function(){};
     }
 
     public function addTest(Callable $test, \string $testName)
@@ -43,8 +49,27 @@ class Suite implements \IteratorAggregate
             } else {
                 $summary->failed[] = $testName;
             }
+
+            $this->runAfterTestCallback($summary->executed, $testName, $testResult);
         }
 
         return $summary;
+    }
+
+    /**
+     * @param int $testNumber
+     * @param string $testName
+     * @param Result $testResult
+     */
+    private function runAfterTestCallback(\int $testNumber, \string $testName, Result $testResult)
+    {
+        $afterTestCallback = $this->afterTestCallback;
+
+        $afterTestCallback($testNumber, $testName, $testResult);
+    }
+
+    public function setAfterTestCallback(callable $afterTestCallback)
+    {
+        $this->afterTestCallback = $afterTestCallback;
     }
 }

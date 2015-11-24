@@ -9,13 +9,11 @@ class ShouldBeFailed
 {
     public function __invoke()
     {
-        $testName = 'failed-test-name';
         $error = new \Error();
 
-        $ok = Result::failed($testName, $error);
+        $ok = Result::failed($error);
 
         Assert::same($ok->isPassed(), false);
-        Assert::same($ok->getName(), $testName);
         Assert::same($ok->getError(), $error);
     }
 }

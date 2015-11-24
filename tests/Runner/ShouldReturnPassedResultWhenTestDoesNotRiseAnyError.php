@@ -10,13 +10,12 @@ class ShouldReturnPassedResultWhenTestDoesNotRiseAnyError
 {
     public function __invoke()
     {
-        $testRunner = new Runner(function(){});
+        $testRunner = new Runner();
 
-        $testName = 'test-name';
         $passingTest = function(){};
 
-        $expected = Result::passed($testName);
+        $expected = Result::passed();
 
-        Assert::like($testRunner($passingTest, $testName), $expected);
+        Assert::like($testRunner($passingTest), $expected);
     }
 }

@@ -4,7 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use TestIn\Tests\Result\ShouldBeFailed;
 use TestIn\Tests\Result\ShouldBePassed;
-use TestIn\Tests\Runner\ShouldDispatchAfterTestCallback;
+use TestIn\Tests\Suite\ShouldDispatchAfterTestCallback;
 use TestIn\Tests\Suite\ShouldHaveManyTests;
 use TestIn\Tests\Suite\ShouldHaveOneTest;
 use TestIn\Tests\Runner\ShouldReturnFailedResultWhenTestDoesRisesError;
@@ -19,12 +19,10 @@ $tests['Test Runner Should Return Passing result When Test Does Not Rise Any Err
 $tests['Test Runner Should Return Failing result When Test Does Rise An Error'] =
     new ShouldReturnFailedResultWhenTestDoesRisesError();
 
-$tests['Test Runner Should dispatch passing callback when test passes'] =
-    new ShouldDispatchAfterTestCallback();
-
 $tests['Test Suite Should have one test'] = new ShouldHaveOneTest();
 $tests['Test Suite Should have many tests'] = new ShouldHaveManyTests();
 $tests['Test Suite should run test'] = new ShouldRunTests();
+$tests['Test suite should dispatch callback after test'] = new ShouldDispatchAfterTestCallback();
 
 $tests['test result should be passed'] = new ShouldBePassed();
 $tests['test result should be failed'] = new ShouldBeFailed();

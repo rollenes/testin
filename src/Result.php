@@ -10,11 +10,6 @@ class Result
     /**
      * @var string
      */
-    private $name;
-
-    /**
-     * @var string
-     */
     private $status;
 
     /**
@@ -23,13 +18,11 @@ class Result
     private $error;
 
     /**
-     * @param string $testName
      * @param string $status
      * @param \Throwable|null $error
      */
-    private function __construct(\string $testName, \string $status, \Throwable $error = null)
+    private function __construct(\string $status, \Throwable $error = null)
     {
-        $this->name = $testName;
         $this->status = $status;
         $this->error = $error;
     }
@@ -38,9 +31,9 @@ class Result
      * @param string $testName
      * @return Result
      */
-    public static function passed(\string $testName)
+    public static function passed()
     {
-        return new self($testName, self::OK);
+        return new self(self::OK);
     }
 
     /**
@@ -48,9 +41,9 @@ class Result
      * @param \Throwable $error
      * @return Result
      */
-    public static function failed(\string $testName, \Throwable $error)
+    public static function failed(\Throwable $error)
     {
-        return new self($testName, self::FAIL, $error);
+        return new self(self::FAIL, $error);
     }
 
     /**
@@ -59,14 +52,6 @@ class Result
     public function isPassed()
     {
         return $this->status === self::OK;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**

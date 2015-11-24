@@ -19,7 +19,7 @@ class ShouldRunTests
         $suite->addTest(function(){}, $passingName);
         $suite->addTest(function(){throw new \Exception;}, $failingName);
 
-        $result = $suite(new Runner(function(){}));
+        $result = $suite(new Runner());
 
         $expected = new Summary();
 
