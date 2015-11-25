@@ -13,7 +13,7 @@ function printGreetings()
  * @param string $file
  * @return Suite
  */
-function loadSuiteFromFile(\string $file)
+function loadSuiteFromFile(string $file)
 {
     $suite = new Suite();
 
@@ -26,17 +26,21 @@ function loadSuiteFromFile(\string $file)
     return $suite;
 }
 
-$printResultCallback = function(\int $testNumber, \string $testName, Result $result) {
+function printResultCallback(int $testNumber, string $testName, Result $result) {
     echo ($result->isPassed() ? "ok" : "not ok") . ' ' . $testNumber . ' ' . $testName . "\n";
     if (!$result->isPassed()) {
         echo $result->getError() . "\n";
     }
 };
 
+$afterTestCallback = function(int $testNumber, string $testName, Result $result) {
+    printResultCallback($testNumber, $testName, $result);
+};
+
 /**
  * @param int $total
  */
-function printTotal(\int $total)
+function printTotal(int $total)
 {
     echo '1..' . $total ."\n";
 }
@@ -56,15 +60,15 @@ if (isset($_SERVER['argv'][1])) {
 
     $suite = loadSuiteFromFile($_SERVER['argv'][1]);
 
-    $suite->setAfterTestCallback($printResultCallback);
+    $suite->setAfterTestCallback($afterTestCallback);
 
-    $summary = $suite($runner);
+    $result = $suite($runner);
 
-    if (!empty($summary->failed)) {
+    if (!$result->isPassed()) {
         $exitCode = 1;
     }
 
-    printTotal($summary->total);
+    printTotal($suite->getTestsCount());
 } else {
     printNoTestFound();
 }

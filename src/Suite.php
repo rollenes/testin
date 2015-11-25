@@ -2,12 +2,12 @@
 
 namespace TestIn;
 
-class Suite implements \IteratorAggregate
+class Suite
 {
     /**
-     * @var \ArrayIterator
+     * @var callable[]
      */
-    private $tests;
+    private $tests = [];
 
     /**
      * @var callable
@@ -16,44 +16,48 @@ class Suite implements \IteratorAggregate
 
     public function __construct()
     {
-        $this->tests = new \ArrayIterator();
         $this->afterTestCallback = function(){};
     }
 
-    public function addTest(Callable $test, \string $testName)
+    /**
+     * @param callable $test
+     * @param string $testName
+     */
+    public function addTest(callable $test, string $testName)
     {
         $this->tests[$testName] = $test;
     }
 
-    public function getIterator()
+    /**
+     * @param callable $afterTestCallback
+     */
+    public function setAfterTestCallback(callable $afterTestCallback)
     {
-        return $this->tests;
-    }
-
-    public function count()
-    {
-        return $this->tests->count();
+        $this->afterTestCallback = $afterTestCallback;
     }
 
     public function __invoke(Runner $runner)
     {
-        $summary = new Summary();
-        $summary->total = $this->count();
+        $testNumber = 0;
+
+        $firstFailure = null;
 
         foreach($this->tests as $testName => $test) {
-            $testResult = $runner($test, $testName);
-            $summary->executed++;
+            $testResult = $runner($test);
+            $testNumber++;
 
-            if ($testResult->isPassed()) {
-                $summary->passed[] = $testName;
-            } else {
-                $summary->failed[] = $testName;
+            if (!$firstFailure && !$testResult->isPassed()) {
+                $firstFailure = $testResult;
             }
 
-            $this->runAfterTestCallback($summary->executed, $testName, $testResult);
+            $this->runAfterTestCallback($testNumber, $testName, $testResult);
         }
 
-        return $summary;
+        if ($firstFailure) {
+            return Result::failed($firstFailure->getError());
+        }
+
+        return Result::passed();
     }
 
     /**
@@ -61,15 +65,15 @@ class Suite implements \IteratorAggregate
      * @param string $testName
      * @param Result $testResult
      */
-    private function runAfterTestCallback(\int $testNumber, \string $testName, Result $testResult)
+    private function runAfterTestCallback(int $testNumber, string $testName, Result $testResult)
     {
         $afterTestCallback = $this->afterTestCallback;
 
         $afterTestCallback($testNumber, $testName, $testResult);
     }
 
-    public function setAfterTestCallback(callable $afterTestCallback)
+    public function getTestsCount() : int
     {
-        $this->afterTestCallback = $afterTestCallback;
+        return count($this->tests);
     }
 }

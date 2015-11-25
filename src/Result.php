@@ -21,14 +21,13 @@ class Result
      * @param string $status
      * @param \Throwable|null $error
      */
-    private function __construct(\string $status, \Throwable $error = null)
+    private function __construct(string $status, \Throwable $error = null)
     {
         $this->status = $status;
         $this->error = $error;
     }
 
     /**
-     * @param string $testName
      * @return Result
      */
     public static function passed()
@@ -37,7 +36,6 @@ class Result
     }
 
     /**
-     * @param string $testName
      * @param \Throwable $error
      * @return Result
      */
