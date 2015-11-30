@@ -67,9 +67,11 @@ class Suite
      */
     private function runAfterTestCallback(int $testNumber, string $testName, Result $testResult)
     {
-        $afterTestCallback = $this->afterTestCallback;
-
-        $afterTestCallback($testNumber, $testName, $testResult);
+        call_user_func($this->afterTestCallback,
+            $testNumber,
+            $testName,
+            $testResult
+        );
     }
 
     public function getTestsCount() : int

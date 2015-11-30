@@ -4,9 +4,9 @@ use TestIn\Result;
 use TestIn\Runner;
 use TestIn\Suite;
 
-function printGreetings()
+function printTapVersion()
 {
-    echo "Welcome to TestIn by @rollenes\n";
+    echo "TAP version 13\n";
 }
 
 /**
@@ -45,12 +45,7 @@ function printTotal(int $total)
     echo '1..' . $total ."\n";
 }
 
-function printNoTestFound()
-{
-    echo "No tests found :(\n";
-}
-
-printGreetings();
+printTapVersion();
 
 $exitCode = 0;
 
@@ -69,8 +64,6 @@ if (isset($_SERVER['argv'][1])) {
     }
 
     printTotal($suite->getTestsCount());
-} else {
-    printNoTestFound();
 }
 
 exit($exitCode);

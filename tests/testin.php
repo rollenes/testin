@@ -50,22 +50,20 @@ function runTestIn(string $testFile) {
     return new TestInResult($output, $returnedVal);
 }
 
-$displays_greetings = function () {
+$displays_tap_version = function () {
 
     $result = runTestIn('');
 
-    $expected = 'Welcome to TestIn by @rollenes';
+    $expected = 'TAP version 13';
 
     Assert::same($result->getOutput()[0], $expected);
 };
 
-$displays_no_test_found = function() {
+$displays_only_tap_version_if_no_test_were_found = function() {
 
     $result = runTestIn('');
 
-    $expected = 'No tests found :(';
-
-    Assert::same($result->getOutput()[1], $expected);
+    Assert::same(1, count($result->getOutput()));
 };
 
 $displays_number_of_total_tests_found = function($path, $total) {
@@ -123,8 +121,8 @@ $returns_1_when_one_of_tests_fails = function() {
 };
 
 return [
-    'displays_greetings' => $displays_greetings,
-    'displays_no_test_found' =>  $displays_no_test_found,
+    'displays_tap_version' => $displays_tap_version,
+    'displays_tap_version_if_no_test_were_found' =>  $displays_only_tap_version_if_no_test_were_found,
     'displays_number_of_total_tests_found_1' => function() use ($displays_number_of_total_tests_found) {
         $displays_number_of_total_tests_found(FIXTURES_PATH . '/two-tests.php', 2);
     },
